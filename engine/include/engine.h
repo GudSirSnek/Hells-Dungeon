@@ -5,43 +5,22 @@
 #include "util.h"
 #include "maths.h"
 #include "shader.h"
-static SDL_Window *window = NULL;
-static SDL_GLContext maincontext;
-uint32_t w_flags = 0;
-GLuint shader_default;
+#include "graphics.h"
+#include "StateManager.h"
 
-typedef struct {
+struct EngineOptions{
+  char *title;
   int width;
   int height;
-  SDL_Window *window;
-} Graphics;
+};
 
-typedef struct primitive {
-  unsigned int VBO, VAO, EBO;
-  int vertices;
-  int indices;
-} primitive;
-
+typedef struct {
+  char quit;
+  Graphics *graphics;
+  StateManager *statemanager;
+} Engine;
 
 
-void pe_init(void);
+void pe_Engine_init(Engine *engine, struct EngineOptions *options);
 
-void pe_createWindow(const char *name, int width, int height);
-
-void pe_createRenderer(void);
-
-void pe_clearScreen(int r, int g, int b, int a);
-
-void pe_startRender(void);
-
-void pe_endRender(void);
-
-void pe_drawCircle(float cx, float cy, float r, int num_segments);
-
-void pe_init_rect(unsigned int *vao, unsigned int *vbo, unsigned int *ebo);
-
-void pe_drawRect(pe_vec2 position, pe_vec2 size, pe_vec4 color);
-
-void pe_getInput(void);
-
-void pe_uninit(void);
+void pe_Engine_free(Engine *engine);

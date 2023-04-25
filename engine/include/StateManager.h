@@ -1,6 +1,4 @@
-#ifndef ENGINE_STATEMANAGER_H
-#define ENGINE_STATEMANAGER_H
-
+#pragma once
 typedef unsigned int (*fnPtr)();
 typedef unsigned int (*fnPtrFl)(float);
 
@@ -24,5 +22,3 @@ int STATEMANAGER_pop(StateManager *statemanager);
 State *STATEMANAGER_top(StateManager *statemanager);
 int STATEMANAGER_update(StateManager *statemanager, float deltatime);
 int STATEMANAGER_draw(StateManager *statemanager, float deltatime);
-
-#endif

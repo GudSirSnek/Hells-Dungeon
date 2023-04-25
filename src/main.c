@@ -11,30 +11,6 @@
 #define FPS 60
 #define FRAME_TARGET_TIME (1000 / FPS)
 
-unsigned int initState1() {
-  printf("state 1 created\n");
-  return 0;
-}
-
-unsigned int destroyState1() {
-  printf("state 1 destroyed\n");
-  return 0;
-}
-
-unsigned int initState2() {
-  printf("state 2 created\n");
-  return 0;
-}
-
-unsigned int updateState2(float deltatime) {
-  printf("state 2 update %f\n", deltatime);
-  return 0;
-}
-
-unsigned int destroyState2() {
-  printf("state 2 destroyed\n");
-  return 0;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Global variables
@@ -80,60 +56,41 @@ void update(void) {
 // Main function
 ///////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* args[]) {
-    //game_is_running = initialize_window();
-    game_is_running = 1;
-    pe_init();
-    pe_createWindow("A window", WINDOW_WIDTH, WINDOW_HEIGHT);
-    pe_createRenderer();
-    setup();
+    
+    struct EngineOptions options = {0};
+    options.title ="A window";
+    options.width = 800;
+    options.height = 600;
+    Engine engine;
+    pe_Engine_init(&engine, &options);
+
     SDL_Event event;
     
     pe_vec2 position = {0,0};
     pe_vec2 size = {0.5, 0.5};
     pe_vec4 color = {1,1,0,1};
-    StateManager statemanager;
-    STATEMANAGER_init(&statemanager);
 
-    State state1 = {0};
-    state1.init = initState1;
-    state1.destroy = destroyState1;
-
-    State state2 = {0};
-    state2.init = initState2;
-    state2.update = updateState2;;
-    state2.destroy = destroyState2;
-
-    STATEMANAGER_push(&statemanager, &state1);
-    STATEMANAGER_update(&statemanager, 10.0f);
-
-    STATEMANAGER_push(&statemanager, &state2);
-    STATEMANAGER_update(&statemanager, 10.0f);
-
-    STATEMANAGER_pop(&statemanager);
-    STATEMANAGER_update(&statemanager, 10.0f);
-
-    STATEMANAGER_free(&statemanager);
-
-    while (game_is_running) {
+    while (!engine.quit) {
        
         SDL_PollEvent(&event);
         switch (event.type) {
             case SDL_QUIT:
-                game_is_running = FALSE;
+                engine.quit = 1;
                 break;
         }
-        update();
-        pe_clearScreen(0, 0, 0, 255);
         
-
+        update();
+    
         pe_startRender();
         pe_drawRect(position, size, color);
+
+        pe_endRender(engine.graphics);
         //render stuff here
        
-        pe_endRender();
+        
     }
 
-    pe_uninit();
+    pe_Engine_free(&engine);
 
     return 0;
 }
