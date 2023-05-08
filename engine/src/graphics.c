@@ -127,8 +127,14 @@ void pe_drawRect(pe_vec2 position, pe_vec2 size, pe_vec4 color){
     //scale matrix
     M4x4_scale_aniso(model, model, size[0], size[1], 1);
 
+    M4x4 projection;
+    M4x4_identity(projection);
+    M4x4_ortho(0, 800, 0 ,600 ,0, 100, projection);
+
+
     glUniformMatrix4fv(glGetUniformLocation(shader_default, "model"), 1, GL_FALSE, &model[0][0]);
 	glUniform4fv(glad_glGetUniformLocation(shader_default, "color"), 1, color);
+    glUniformMatrix4fv(glGetUniformLocation(shader_default, "projection"), 1, GL_FALSE, &projection[0][0]);
     glBindVertexArray(pe_rect.VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

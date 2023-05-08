@@ -28,3 +28,5 @@ void M4x4_scale_aniso(M4x4 M, M4x4 const a, float x, float y, float z);
 
 void vec4_scale(pe_vec4 r, pe_vec4 const v, float const s);
 void vec4_dup(pe_vec4 r, pe_vec4 const src);
+
+void M4x4_ortho(float l, float r, float b, float t, float n, float f, M4x4 M);

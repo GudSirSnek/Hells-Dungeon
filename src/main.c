@@ -17,7 +17,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 int game_is_running = FALSE;
 int last_frame_time = 0;
-
+const Uint8* currentKeyStates = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function to poll SDL events and process keyboard input
@@ -52,6 +52,11 @@ void update(void) {
 }
 
 
+
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Main function
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,22 +71,37 @@ int main(int argc, char* args[]) {
 
     SDL_Event event;
     
-    pe_vec2 position = {0,0};
-    pe_vec2 size = {0.5, 0.5};
+    pe_vec2 position = {400,300};
+    pe_vec2 size = {100, 100};
     pe_vec4 color = {1,1,0,1};
 
     while (!engine.quit) {
        
         SDL_PollEvent(&event);
-        switch (event.type) {
-            case SDL_QUIT:
+
+        if (event.type == SDL_QUIT){
                 engine.quit = 1;
-                break;
         }
+        currentKeyStates = SDL_GetKeyboardState(NULL);
+
+        if(currentKeyStates[SDL_SCANCODE_UP]){
+            position[1] += 10;
+        }
+        if(currentKeyStates[SDL_SCANCODE_DOWN]){
+            position[1] -= 10;
+        }
+        if(currentKeyStates[SDL_SCANCODE_LEFT]){
+            position[0] -= 10;
+        }
+        if(currentKeyStates[SDL_SCANCODE_RIGHT]){
+            position[0] += 10;
+        }
+
         
         update();
     
         pe_startRender();
+       
         pe_drawRect(position, size, color);
 
         pe_endRender(engine.graphics);

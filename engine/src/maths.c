@@ -41,3 +41,25 @@ void M4x4_scale_aniso(M4x4 M, M4x4 const a, float x, float y, float z){
 	vec4_dup(M[3], a[3]);
 
 }
+
+void M4x4_ortho(float l, float r, float b, float t, float n, float f, M4x4 M) {
+    M[0][0] = 2.0 / (r - l); 
+    M[0][1] = 0; 
+    M[0][2] = 0; 
+    M[0][3] = 0; 
+ 
+    M[1][0] = 0; 
+    M[1][1] = 2.0 / (t - b); 
+    M[1][2] = 0; 
+    M[1][3] = 0; 
+ 
+    M[2][0] = 0; 
+    M[2][1] = 0; 
+    M[2][2] = -2.0 / (f - n); 
+    M[2][3] = 0; 
+ 
+    M[3][0] = -(r + l) / (r - l); 
+    M[3][1] = -(t + b) / (t - b); 
+    M[3][2] = -(f + n) / (f - n); 
+    M[3][3] = 1.0; 
+}
